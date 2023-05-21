@@ -1,0 +1,38 @@
+version: "2"
+services:
+  app:
+    build: ./app/
+    restart: on-failure
+    links:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - main-network
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: poop
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d/:ro
+      - mysql-data:/var/lib/mysql
+    networks:
+      - main-network
+  nginx:
+    image: jwuebblz/league_kda_angular:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+    networks:
+      - main-network
+volumes:
+  mysql-data:
+    driver: local
+networks:
+  main-network:
+    driver: bridge
