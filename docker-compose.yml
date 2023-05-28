@@ -1,23 +1,17 @@
 version: "2"
 services:
   app:
-    # build: ./app/
     image: jwuebblz/flask:latest
     restart: on-failure
     links:
       - db
-    # ports:
-    #   - "8000:8000"
     networks:
       - main-network
   db:
     image: jwuebblz/mysql:latest
-    # ports:
-    #   - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: poop
     volumes:
-      # - ./mysql:/docker-entrypoint-initdb.d/:ro
       - mysql-data:/var/lib/mysql
     networks:
       - main-network
@@ -25,8 +19,6 @@ services:
     image: jwuebblz/nginx:latest
     ports:
       - "80:80"
-    # volumes:
-    #   - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - app
     networks:
