@@ -1,20 +1,20 @@
 version: "3"
 services:
-  flask_backend:
-    image: jwuebblz/flask:latest
-    restart: on-failure
-    links:
-      - mysql_db
-    networks:
-      - main-network
   nginx_login:
     image: jwuebblz/login:latest
     restart: always
     ports: 
       - "80:80"
     depends_on: 
-      - flask_backend
+      - flask
     networks: 
+      - main-network
+  flask:
+    image: jwuebblz/flask:latest
+    restart: on-failure
+    depends_on:
+      - mysql_db
+    networks:
       - main-network
   mysql_db:
     image: jwuebblz/mysql:latest
