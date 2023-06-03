@@ -1,14 +1,14 @@
 version: "3"
 services:
-  nginx_login:
-    image: jwuebblz/login:latest
-    restart: always
-    ports: 
-      - "80:80"
-    depends_on: 
-      - flask
-    networks: 
-      - main-network
+  # nginx_login:
+  #   image: jwuebblz/login:latest
+  #   restart: always
+  #   ports: 
+  #     - "80:80"
+  #   depends_on: 
+  #     - flask
+  #   networks: 
+  #     - main-network
   flask:
     image: jwuebblz/flask:latest
     restart: on-failure
@@ -24,24 +24,24 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - main-network
-  # nginx:
-  #   image: jwuebblz/nginx:latest
-  #   ports:
-  #     # - "80:80"
-  #     - "443:443"
-  #   restart: always
-  #   # volumes:
-  #   #   - ./certbot/www:/var/www/certbot/:ro
-  #   #   - ./certbot/conf/:/etc/nginx/ssl/:ro
-  #   depends_on:
-  #     - app
-  #   networks:
-  #     - main-network
-  # # certbot:
-  # #   image: certbot/certbot:latest
-  # #   volumes:
-  # #     - ./certbot/www/:/var/www/certbot/:rw
-  # #     - ./certbot/conf/:/etc/letsencrypt/:rw
+  nginx:
+    image: jwuebblz/nginx:latest
+    ports:
+      # - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    depends_on:
+      - flask
+    networks:
+      - main-network
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 volumes:
   mysql-data:
     driver: local
