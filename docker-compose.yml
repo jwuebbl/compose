@@ -1,14 +1,5 @@
 version: "3"
 services:
-  # nginx_login:
-  #   image: jwuebblz/login:latest
-  #   restart: always
-  #   ports: 
-  #     - "80:80"
-  #   depends_on: 
-  #     - flask
-  #   networks: 
-  #     - main-network
   flask:
     image: jwuebblz/flask:latest
     restart: on-failure
@@ -27,7 +18,7 @@ services:
   nginx:
     image: jwuebblz/nginx:latest
     ports:
-      # - "80:80"
+      - "80:80"
       - "443:443"
     restart: always
     volumes:
@@ -37,11 +28,11 @@ services:
       - flask
     networks:
       - main-network
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
+  #     - ./certbot/conf/:/etc/letsencrypt/:rw
 volumes:
   mysql-data:
     driver: local
