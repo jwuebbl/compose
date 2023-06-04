@@ -1,2 +1,6 @@
 docker-compose pull
-docker-compose up
+if [ "$1" = "-d" ]; then
+  docker-compose up -d
+else
+  docker-compose up
+fi
